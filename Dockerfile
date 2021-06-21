@@ -13,8 +13,7 @@ COPY package.json .
 COPY yarn.lock .
 RUN yarn install --production
 COPY --from=BuildBot /usr/src/bot/dist .
-RUN npm install pm2 -g
 ENV NODE_ENV production
 ENV PORT 80
 EXPOSE 80
-CMD ["pm2-runtime","index.js"]
+CMD ["node", "index.js"]
