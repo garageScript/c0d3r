@@ -8,10 +8,11 @@ Details about the bot's design and arcitecture are available in this [design doc
 
 # Running the bot
 
-The bot runs on the c0d3 CapRover server and can be communicated with the Api.
+The production bot runs on the c0d3 CapRover server and can be communicated with the Api.
 
-It can be run locally the following ways :
+## Development - Getting Started
 
+\* First you need to register a discord application to get the `DISCORD_TOKEN` that c0d3r will use to forward your commands to your discord server. A guide for that setup can be found on the wiki page here: [creating a discord bot](./discordbotsetup.md)
 - ## Using yarn
 
 1. Run `yarn` to install dependecies
@@ -22,3 +23,9 @@ It can be run locally the following ways :
 
 1. Run `docker build -t c0d3r .` to build the image
 2. Run `docker run --env DISCORD_TOKEN=token --env BOT_TOKEN=token c0d3r` to start a new container with the bot. The env variables are required.
+
+---
+Notes
+
+- The production `DISCORD_TOKEN` available to the engineering team should not be used for local development as the `c0d3` discord server will end up receiving your test messages.
+- For testing your `BOT_TOKEN` can be any value as long as the application sending the api commands has the same `Authorization` header token set `Bearer <BOT_TOKEN>`
