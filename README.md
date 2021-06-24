@@ -12,7 +12,7 @@ The production bot runs on the c0d3 CapRover server and can be communicated with
 
 ## Development - Getting Started
 
-\* First you need to register a discord application to get the `DISCORD_TOKEN` that c0d3r will use to forward your commands to your discord server. A guide for that setup can be found on the wiki page here: [creating a discord bot](./discordbotsetup.md)
+\* First you need to register a discord application to get the `DISCORD_TOKEN` that c0d3r will use to forward your commands to your discord server. A guide for that setup can be found on the wiki page here: [Registering a Discord Bot](https://github.com/garageScript/c0d3r/wiki/Registering-a-Discord-Bot#registering-a-discord-bot)
 - ## Using yarn
 
 1. Run `yarn` to install dependecies
