@@ -29,3 +29,21 @@ Notes
 
 - The production `DISCORD_TOKEN` available to the engineering team should not be used for local development as the `c0d3` discord server will end up receiving your test messages.
 - For testing your `BOT_TOKEN` can be any value as long as the application sending the api commands has the same `Authorization` header token set `Bearer <BOT_TOKEN>`
+
+### Confirm setup
+
+You should be able to run this `curl` command to verify your c0d3r bot is running correctly
+
+```bash
+curl --location --request POST 'http://localhost:5623/api/senddirectmessage' \
+--header 'Authorization: Bearer <BOT_TOKEN>' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "userId": "<USER_ID>",
+    "message": "Good Job! You are ready to c0d3"
+  }'
+```
+
+\* replace `<BOT_TOKEN>` & `<USER_ID>` with their correct corresponding value.
+
+(Enable [developer mode in discord](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-) to get channelId's / userId's )
