@@ -29,20 +29,19 @@ class Bot {
     challengeTitle,
     lessonChannelId,
   }: SubmissionMessage): Promise<Message> => {
-    const userString = idType === IdType.C0D3 ? id : `<@${id}>`;
+    const userString = idType === IdType.C0D3 ? `**${id}**` : `<@${id}>`;
 
     const embed = new MessageEmbed()
       .setColor("#5440d8")
       .setTitle("New Submission")
       .setURL(`https://www.c0d3.com/review/${lessonId}`)
       .setDescription(
-        `${userString} has submitted a solution **_${challengeTitle}_**.
+        `${userString} has submitted a solution to **_${challengeTitle}_**.
     Click [here](https://www.c0d3.com/review/${lessonId}) to review code`
       )
       .setTimestamp();
 
-    const message = `${userString} has submitted a solution **_${challengeTitle}_**.`;
-    return this.sendChannelMessage(message, lessonChannelId, embed);
+    return this.sendChannelMessage("", lessonChannelId, embed);
   };
 
   sendChannelMessage = async (
