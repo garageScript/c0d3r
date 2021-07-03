@@ -2,19 +2,13 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import express from "express";
-import { apiRouter } from "./src/api";
 import { config } from "./config";
 
-const app = express();
+import Bot from "./src/Bot";
+import { app } from "./app";
+export const bot = new Bot();
 
-app.use(express.json());
-
-app.get("/", (req, res) => {
-  res.send('<a href="https://c0d3.com">Become a software engineer!</a>');
-});
-
-app.use("/api", apiRouter);
+bot.login(config.discordToken).then(() => console.info("🤖 Bot is logged in"));
 
 app.listen(config.port, () => {
   console.info(`🤖 Bot is listening at :${config.port}`);

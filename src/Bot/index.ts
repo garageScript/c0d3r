@@ -1,15 +1,22 @@
-import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
+import { config } from "../../config";
+import {
+  Client,
+  Message,
+  MessageEmbed,
+  MessageEmbedOptions,
+  TextChannel,
+} from "discord.js";
 
-export interface SubmissionMessage {
-  username: string;
-  lessonId: string;
-  challengeTitle: string;
-  lessonChannelId: string;
+export enum IdType {
+  DISCORD = "DISCORD",
+  C0D3 = "C0D3",
 }
 
-export interface ChannelMessage {
-  channelId: string;
-  message: string;
+export interface SubmissionMessage {
+  idType: IdType;
+  id: string;
+  lessonId: string;
+  challengeTitle: string;
 }
 
 class Bot {
@@ -21,44 +28,45 @@ class Bot {
 
   login = async (token: string) => this.client.login(token);
 
-  sendSubmissionMessage = ({
-    username,
+  sendSubmissionNotification = ({
+    idType,
+    id,
     lessonId,
     challengeTitle,
-    lessonChannelId,
   }: SubmissionMessage): Promise<Message> => {
+    const userString = idType === IdType.C0D3 ? `**${id}**` : `<@${id}>`;
+
     const embed = new MessageEmbed()
       .setColor("#5440d8")
       .setTitle("New Submission")
       .setURL(`https://www.c0d3.com/review/${lessonId}`)
       .setDescription(
-        `**@${username}** has submitted a solution **_${challengeTitle}_**.
+        `${userString} has submitted a solution to **_${challengeTitle}_**.
     Click [here](https://www.c0d3.com/review/${lessonId}) to review code`
       )
       .setTimestamp();
 
-    return (this.client.channels.cache.get(
-      lessonChannelId
-    ) as TextChannel)?.send(
-      `@${username} has submitted a solution **_${challengeTitle}_**.`,
-      embed
-    );
+    return this.sendChannelMessage("", config.lessonChannels[lessonId], embed);
   };
 
   sendChannelMessage = async (
     message: string,
-    channelId: string
+    channelId: string,
+    embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> =>
-    (this.client.channels.cache.get(channelId) as TextChannel)?.send(message);
+    (this.client.channels.cache.get(channelId) as TextChannel).send(message, {
+      embed,
+    });
 
   sendDirectMessage = async (
     message: string,
-    userId: string
-  ): Promise<Message | undefined> => {
+    userId: string,
+    embed?: MessageEmbed | MessageEmbedOptions
+  ): Promise<Message> => {
     let user =
       this.client.users.cache.get(userId) ??
       (await this.client.users.fetch(userId));
-    return user?.send(message);
+    return user.send(message, { embed });
   };
 }
 
