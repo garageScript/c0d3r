@@ -9,6 +9,7 @@ interface Config {
   discordToken: string;
   botAccessToken: string;
   lessonChannels: { [key: string]: string };
+  channels: { [key: string]: string };
   port: number;
 }
 
@@ -40,5 +41,9 @@ export const config: Config = {
     // JS9
     "27": "830050679162011680",
   },
+  // Channels
+  channels: {
+    welcome: "831750041445203979",
+  },
   port: parseInt(process.env.PORT ?? "") || 5623,
-};
+} as const;

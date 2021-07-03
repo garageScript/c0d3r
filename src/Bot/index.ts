@@ -6,6 +6,7 @@ import {
   MessageEmbedOptions,
   TextChannel,
 } from "discord.js";
+import { BotEvent } from "./events";
 
 export enum IdType {
   DISCORD = "DISCORD",
@@ -67,6 +68,14 @@ class Bot {
       this.client.users.cache.get(userId) ??
       (await this.client.users.fetch(userId));
     return user.send(message, { embed });
+  };
+
+  registerEvent = (event: BotEvent) => {
+    if (event.once) {
+      this.client.once(event.name, (...args) => event.execute(...args));
+    } else {
+      this.client.on(event.name, (...args) => event.execute(...args));
+    }
   };
 }
 
