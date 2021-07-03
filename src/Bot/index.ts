@@ -1,4 +1,11 @@
-import { Client, Message, MessageEmbed, TextChannel } from "discord.js";
+import { config } from "../../config";
+import {
+  Client,
+  Message,
+  MessageEmbed,
+  MessageEmbedOptions,
+  TextChannel,
+} from "discord.js";
 
 export enum IdType {
   DISCORD = "DISCORD",
@@ -10,7 +17,6 @@ export interface SubmissionMessage {
   id: string;
   lessonId: string;
   challengeTitle: string;
-  lessonChannelId: string;
 }
 
 class Bot {
@@ -27,7 +33,6 @@ class Bot {
     id,
     lessonId,
     challengeTitle,
-    lessonChannelId,
   }: SubmissionMessage): Promise<Message> => {
     const userString = idType === IdType.C0D3 ? `**${id}**` : `<@${id}>`;
 
@@ -41,13 +46,13 @@ class Bot {
       )
       .setTimestamp();
 
-    return this.sendChannelMessage("", lessonChannelId, embed);
+    return this.sendChannelMessage("", config.lessonChannels[lessonId], embed);
   };
 
   sendChannelMessage = async (
     message: string,
     channelId: string,
-    embed?: MessageEmbed
+    embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> =>
     (this.client.channels.cache.get(channelId) as TextChannel).send(message, {
       embed,
@@ -56,7 +61,7 @@ class Bot {
   sendDirectMessage = async (
     message: string,
     userId: string,
-    embed?: MessageEmbed
+    embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> => {
     let user =
       this.client.users.cache.get(userId) ??
