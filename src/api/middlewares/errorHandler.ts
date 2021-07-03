@@ -2,10 +2,6 @@ import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.error(err);
-
-  console.log({ NAME: err.name });
-
   // Incorrect Auth Token
   if (err.name === "AuthError") {
     return res.status(403).json({ error: err.message });
