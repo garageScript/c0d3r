@@ -18,7 +18,7 @@ messages.post(
     const { message, embed }: ChannelMessage = req.body;
 
     const { id: messageId } = await bot.sendChannelMessage(message, id, embed);
-    return res.status(200).json({ id: messageId });
+    return res.status(201).json({ id: messageId });
   })
 );
 
@@ -30,6 +30,6 @@ messages.post(
     const { message, embed }: DirectMessage = req.body;
 
     const { id } = await bot.sendDirectMessage(message, userId, embed);
-    return res.status(200).json({ id });
+    return res.status(201).json({ id });
   })
 );
