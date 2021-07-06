@@ -10,6 +10,6 @@ submissions.post(
   SubmissionNotificationValidator,
   asyncErrorHandler(async (req, res) => {
     const { id: messageId } = await bot.sendSubmissionNotification(req.body);
-    return res.status(200).json({ id: messageId });
+    return res.status(201).json({ id: messageId });
   })
 );
