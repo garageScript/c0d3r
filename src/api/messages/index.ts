@@ -7,6 +7,7 @@ import {
 import { asyncErrorHandler } from "../utils/asyncErrorHandler";
 import { ChannelMessage } from "../zodSchemas/ChannelMessage";
 import { DirectMessage } from "../zodSchemas/DirectMessage";
+import { config } from "../../../config";
 
 export const messages = express.Router();
 
@@ -18,6 +19,22 @@ messages.post(
     const { message, embed }: ChannelMessage = req.body;
 
     const { id: messageId } = await bot.sendChannelMessage(message, id, embed);
+    return res.status(201).json({ id: messageId });
+  })
+);
+
+messages.post(
+  "/lessonChannel/:id",
+  ChannelMessageValidator,
+  asyncErrorHandler(async (req, res) => {
+    const { id } = req.params;
+    const { message, embed }: ChannelMessage = req.body;
+
+    const { id: messageId } = await bot.sendChannelMessage(
+      message,
+      config.lessonChannels[id],
+      embed
+    );
     return res.status(201).json({ id: messageId });
   })
 );
