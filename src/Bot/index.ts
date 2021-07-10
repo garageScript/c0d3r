@@ -16,6 +16,7 @@ export enum IdType {
 export interface SubmissionMessage {
   idType: IdType;
   id: string;
+  notificationLessonId: string;
   lessonId: string;
   challengeTitle: string;
 }
@@ -32,6 +33,7 @@ class Bot {
   sendSubmissionNotification = ({
     idType,
     id,
+    notificationLessonId,
     lessonId,
     challengeTitle,
   }: SubmissionMessage): Promise<Message> => {
@@ -47,7 +49,7 @@ class Bot {
       )
       .setTimestamp();
 
-    return this.sendChannelMessage("", config.lessonChannels[lessonId], embed);
+    return this.sendChannelMessage("", config.lessonChannels[notificationLessonId], embed);
   };
 
   sendChannelMessage = async (
