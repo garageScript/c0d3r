@@ -8,6 +8,7 @@ import { asyncErrorHandler } from "../utils/asyncErrorHandler";
 import { ChannelMessage } from "../zodSchemas/ChannelMessage";
 import { DirectMessage } from "../zodSchemas/DirectMessage";
 import { config } from "../../../config";
+import { sendMessageDetailsIfIncluded } from "../utils/sendMessageDetailsIfIncluded";
 
 export const messages = express.Router();
 
@@ -16,26 +17,24 @@ messages.post(
   ChannelMessageValidator,
   asyncErrorHandler(async (req, res) => {
     const { id } = req.params;
-    const { message, embed }: ChannelMessage = req.body;
-
-    const { id: messageId } = await bot.sendChannelMessage(message, id, embed);
-    return res.status(201).json({ id: messageId });
+    const { message, embed, includeDetails }: ChannelMessage = req.body;
+    const botPromise = bot.sendChannelMessage(message, id, embed);
+    await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
 );
 
 messages.post(
-  "/lessonChannel/:id",
+  "/lessonChannel/:lessonId",
   ChannelMessageValidator,
   asyncErrorHandler(async (req, res) => {
-    const { id } = req.params;
-    const { message, embed }: ChannelMessage = req.body;
-
-    const { id: messageId } = await bot.sendChannelMessage(
+    const { lessonId } = req.params;
+    const { message, embed, includeDetails }: ChannelMessage = req.body;
+    const botPromise = bot.sendChannelMessage(
       message,
-      config.lessonChannels[id],
+      config.lessonChannels[lessonId],
       embed
     );
-    return res.status(201).json({ id: messageId });
+    await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
 );
 
@@ -44,9 +43,8 @@ messages.post(
   DirectMessageValidator,
   asyncErrorHandler(async (req, res) => {
     const { userId } = req.params;
-    const { message, embed }: DirectMessage = req.body;
-
-    const { id } = await bot.sendDirectMessage(message, userId, embed);
-    return res.status(201).json({ id });
+    const { message, embed, includeDetails }: DirectMessage = req.body;
+    const botPromise = bot.sendDirectMessage(message, userId, embed);
+    await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
 );
