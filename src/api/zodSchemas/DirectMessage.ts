@@ -5,6 +5,7 @@ export const DirectMessageSchema = z
   .object({
     message: z.string(),
     embed: z.object(MessageEmbedOptionsShape).strict().optional(),
+    includeDetails: z.boolean().optional().default(false),
   })
   .strict();
 

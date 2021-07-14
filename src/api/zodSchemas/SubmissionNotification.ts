@@ -7,6 +7,7 @@ export const SubmissionNotificationSchema = z.object({
   notificationLessonId: z.string().min(1),
   lessonId: z.string().min(1),
   challengeTitle: z.string().min(1),
+  includeDetails: z.boolean().optional().default(false),
 });
 
 export type SubmissionNotification = z.infer<
