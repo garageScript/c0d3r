@@ -17,7 +17,7 @@ export interface SubmissionMessage {
   idType: IdType;
   id: string;
   notificationLessonId: string;
-  lessonId: string;
+  lessonSlug: string;
   challengeTitle: string;
 }
 
