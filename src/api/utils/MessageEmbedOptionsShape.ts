@@ -17,7 +17,6 @@ export const MessageEmbedOptionsShape: ZodShape<MessageEmbedOptions> = {
     ])
     .optional(),
   fields: z.any().optional(),
-  files: z.any().optional(),
   author: z.any().optional(),
   thumbnail: z.any().optional(),
   image: z.any().optional(),
