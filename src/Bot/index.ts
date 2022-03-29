@@ -1,6 +1,7 @@
 import { config } from "../../config";
 import {
   Client,
+  Intents,
   Message,
   MessageEmbed,
   MessageEmbedOptions,
@@ -25,7 +26,7 @@ class Bot {
   private client: Client;
 
   constructor() {
-    this.client = new Client();
+    this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
   }
 
   login = async (token: string) => this.client.login(token);
@@ -57,19 +58,17 @@ class Bot {
     channelId: string,
     embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> =>
-    (this.client.channels.cache.get(channelId) as TextChannel).send(message, {
-      embed,
-    });
+    (this.client.channels.cache.get(channelId) as TextChannel).send(message ? message : { embeds: [embed!] });
 
   sendDirectMessage = async (
     message: string,
     userId: string,
     embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> => {
-    let user =
+    const user =
       this.client.users.cache.get(userId) ??
       (await this.client.users.fetch(userId));
-    return user.send(message, { embed });
+    return user.send(message ? message : { embeds: [embed!] });
   };
 
   registerEvent = (event: BotEvent) => {
