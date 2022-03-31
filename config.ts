@@ -3,6 +3,9 @@ const errMessage = (s: string) => `${s}, please add it in .env`
 if (!process.env.DISCORD_TOKEN)
   throw new Error(errMessage("Discord token is required"));
 
+if (!process.env.BOT_ACCESS_TOKEN)
+  throw new Error(errMessage("Bot access token is required"));
+
 if (!process.env.BOT_TOKEN)
   throw new Error(errMessage("Bot token is required"));
 
@@ -16,6 +19,7 @@ interface Config {
   prefix: string;
   discordToken: string;
   botAccessToken: string;
+  botToken: string;
   graphqlAPI: string;
   guildId: string;
   lessonChannels: { [key: string]: string };
@@ -27,7 +31,9 @@ export const config: Config = {
   prefix: "!",
   discordToken: process.env.DISCORD_TOKEN,
   // Access token required in requests to the bot server
-  botAccessToken: process.env.BOT_TOKEN,
+  botAccessToken: process.env.BOT_ACCESS_TOKEN,
+  // Discord bot App ID
+  botToken: process.env.BOT_TOKEN,
   // URL required to send requests to GraphqlAPI
   graphqlAPI: process.env.GRAPHQL_API,
   // Discord channel ID to connect the bot with 
