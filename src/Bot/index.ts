@@ -83,8 +83,8 @@ class Bot {
     rest
       .put(
         Routes.applicationGuildCommands(
-          process.env.BOT_TOKEN!,
-          process.env.GUILD_ID!
+          config.botAccessToken,
+          config.guildId
         ),
         {
           body: commands,
