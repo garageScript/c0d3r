@@ -83,7 +83,7 @@ class Bot {
     rest
       .put(
         Routes.applicationGuildCommands(
-          config.botAccessToken,
+          config.botToken,
           config.guildId
         ),
         {
