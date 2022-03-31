@@ -13,6 +13,6 @@ export interface MessageEvent extends BotEvent {
   execute: (message: Message) => void;
 }
 
-export const registerEvents = () => {
-  bot.registerEvent(message);
-};
+export const registerEvents = () => bot.registerEvent(message)
+export const registerCommands = () => bot.registerCommands()
+export const registerCommandsReplies = () => bot.registerCommandsReplies()

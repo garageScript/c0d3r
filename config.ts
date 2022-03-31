@@ -9,11 +9,15 @@ if (!process.env.BOT_TOKEN)
 if (!process.env.GRAPHQL_API)
   throw new Error(errMessage("GraphQL API is required"))
 
+if (!process.env.GUILD_ID)
+  throw new Error(errMessage("GUILD_ID is required"))
+
 interface Config {
   prefix: string;
   discordToken: string;
   botAccessToken: string;
   graphqlAPI: string;
+  guildId: string;
   lessonChannels: { [key: string]: string };
   channels: { [key: string]: string };
   port: number;
@@ -24,7 +28,10 @@ export const config: Config = {
   discordToken: process.env.DISCORD_TOKEN,
   // Access token required in requests to the bot server
   botAccessToken: process.env.BOT_TOKEN,
+  // URL required to send requests to GraphqlAPI
   graphqlAPI: process.env.GRAPHQL_API,
+  // Discord channel ID to connect the bot with 
+  guildId: process.env.GUILD_ID,
   // Discord channels for the respective lessons
   lessonChannels: {
     // JS0
