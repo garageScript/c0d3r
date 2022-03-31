@@ -8,6 +8,10 @@ import {
   TextChannel,
 } from "discord.js";
 import { BotEvent } from "./events";
+import { REST } from "@discordjs/rest";
+import { Routes } from "discord-api-types/v9";
+import { commands } from "./commands/commands";
+import { onInteractionCreate } from "./commands";
 
 export enum IdType {
   DISCORD = "DISCORD",
@@ -70,6 +74,27 @@ class Bot {
       (await this.client.users.fetch(userId));
     return user.send(message ? message : { embeds: [embed!] });
   };
+
+  registerCommands = async () => {
+    const rest = new REST({ version: "9" }).setToken(
+      process.env.DISCORD_TOKEN!
+    );
+
+    rest
+      .put(
+        Routes.applicationGuildCommands(
+          process.env.BOT_TOKEN!,
+          process.env.GUILD_ID!
+        ),
+        {
+          body: commands,
+        }
+      )
+      .then(() => console.log("🤖 Successfully registered application commands."))
+      .catch(console.error);
+  };
+
+  registerCommandsReplies = () => this.client.on("interactionCreate", onInteractionCreate)
 
   registerEvent = (event: BotEvent) => {
     if (event.once) {
