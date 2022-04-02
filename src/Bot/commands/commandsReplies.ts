@@ -21,13 +21,14 @@ Examples:
   Without subCommand: infoReply
 */
 export const lookupReply = async (interaction: CommandInteraction) => {
+  try {
     const usernameArg = interaction.options.getString('username')
     await interaction.deferReply({ ephemeral: true });
 
     const data = await graphQLClient.request(USER_INFO, {
       username: usernameArg
     }) as UserInfoQuery
-    
+
     const userInfo = data?.userInfo
     const user = userInfo?.user
     const discordUserId = user?.discordUserId
@@ -36,9 +37,10 @@ export const lookupReply = async (interaction: CommandInteraction) => {
       // <@${discordUserId}> is used to create a link for the user profile
       await interaction.editReply({ content: `${usernameArg} on Discord is <@${discordUserId}>` })
     } else {
-      await interaction.editReply({ content: `${usernameArg} is not connected to Discord.`})
+      await interaction.editReply({ content: `${usernameArg} is not connected to Discord.` })
     }
-  } catch () {
+  }
+  catch (err) {
     await interaction.editReply({ content: 'We could not find the user.' })
   }
 }
