@@ -20,7 +20,7 @@ Examples:
   With subCommand: infoSubmissionsReply
   Without subCommand: infoReply
 */
-export const userFindReply = async (interaction: CommandInteraction) => {
+export const lookupReply = async (interaction: CommandInteraction) => {
   const usernameArg = interaction.options.getString('username')
 
   graphQLClient.request(USER_INFO, {
