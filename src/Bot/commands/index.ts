@@ -1,14 +1,10 @@
 import { Awaitable, Interaction } from "discord.js";
-import { userFindReply } from "./commandsReplies";
+import { lookupReply } from "./commandsReplies";
 
 export const onInteractionCreate = (interaction: Interaction): Awaitable<void> => {
-    if (!interaction.isCommand()) return;
+  if (!interaction.isCommand()) return;
 
-    const { commandName } = interaction;
+  const { commandName } = interaction;
 
-    if (commandName === "user") {
-      const subCommandName = interaction.options.getSubcommand()
-
-      if (subCommandName === 'find') userFindReply(interaction)
-    }
+  if (commandName === "lookup") lookupReply(interaction)
 }
