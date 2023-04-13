@@ -20,24 +20,27 @@ Examples:
   With subCommand: infoSubmissionsReply
   Without subCommand: infoReply
 */
-export const userFindReply = async (interaction: CommandInteraction) => {
-  const usernameArg = interaction.options.getString('username')
+export const lookupReply = async (interaction: CommandInteraction) => {
+  try {
+    const usernameArg = interaction.options.getString('username')
+    await interaction.deferReply({ ephemeral: true });
 
-  graphQLClient.request(USER_INFO, {
-    username: usernameArg
-  })
-    .then(async (data: UserInfoQuery) => {
-      const userInfo = data?.userInfo
-      const user = userInfo?.user
-      const discordUserId = user?.discordUserId
+    const data = await graphQLClient.request(USER_INFO, {
+      username: usernameArg
+    }) as UserInfoQuery
 
-      if (discordUserId) {
-        // <@${discordUserId}> is used to create a link for the user profile
-        await interaction.reply({ content: `${usernameArg} on Discord is <@${discordUserId}>`, ephemeral: true })
-      } else {
-        await interaction.reply({ content: `${usernameArg} is not connected to Discord.`, ephemeral: true })
-      }
-    }).catch(async () => {
-      await interaction.reply({ content: 'We could not find the user.', ephemeral: true })
-    })
+    const userInfo = data?.userInfo
+    const user = userInfo?.user
+    const discordUserId = user?.discordUserId
+
+    if (discordUserId) {
+      // <@${discordUserId}> is used to create a link for the user profile
+      await interaction.editReply({ content: `${usernameArg} on Discord is <@${discordUserId}>` })
+    } else {
+      await interaction.editReply({ content: `${usernameArg} is not connected to Discord.` })
+    }
+  }
+  catch (err) {
+    await interaction.editReply({ content: 'We could not find the user.' })
+  }
 }

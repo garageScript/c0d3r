@@ -30,7 +30,13 @@ class Bot {
   private client: Client;
 
   constructor() {
-    this.client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+    this.client = new Client({
+      intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+      ]
+    });
   }
 
   login = async (token: string) => this.client.login(token);
