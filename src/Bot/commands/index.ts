@@ -1,5 +1,5 @@
 import { Awaitable, Interaction } from "discord.js";
-import { lookupReply } from "./commandsReplies";
+import { assistantAskReply, lookupReply } from "./commandsReplies";
 
 export const onInteractionCreate = (interaction: Interaction): Awaitable<void> => {
   if (!interaction.isCommand()) return;
@@ -7,4 +7,7 @@ export const onInteractionCreate = (interaction: Interaction): Awaitable<void> =
   const { commandName } = interaction;
 
   if (commandName === "lookup") lookupReply(interaction)
+  if (commandName === 'ask') {
+    assistantAskReply(interaction)
+  }
 }
