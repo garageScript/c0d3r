@@ -6,8 +6,14 @@ export const onInteractionCreate = (interaction: Interaction): Awaitable<void> =
 
   const { commandName } = interaction;
 
-  if (commandName === "lookup") lookupReply(interaction)
-  if (commandName === 'ask') {
-    assistantAskReply(interaction)
+  switch (commandName) {
+    case "lookup":
+      lookupReply(interaction);
+      break;
+    case "ask":
+      assistantAskReply(interaction);
+      break;
+    default:
+      break;
   }
 }
