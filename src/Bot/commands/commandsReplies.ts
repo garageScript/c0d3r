@@ -40,8 +40,18 @@ export const lookupReply = async (interaction: CommandInteraction) => {
 }
 
 export const assistantAskReply = async (interaction: CommandInteraction) => {
-  const questionArg = interaction.options.getString('question')
+  const { channelId } = interaction
 
+  // only allow this command in the #ask-c0d3 channel
+  if (channelId !== config.channels.askC0d3) {
+    await interaction.reply({
+      content: "You can only use this command in the #ask-c0d3 channel",
+      ephemeral: true,
+    });
+    return
+  }
+
+  const questionArg = interaction.options.getString('question')
   if (!questionArg) {
     await interaction.reply({ content: 'You need to provide a question.', ephemeral: true })
     return
