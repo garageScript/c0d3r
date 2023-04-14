@@ -14,13 +14,6 @@ type UserInfoQuery = {
 
 const graphQLClient = new GraphQLClient(config.graphqlAPI)
 
-/*
-Reply functions format: <command><subCommand>Reply
-
-Examples:
-  With subCommand: infoSubmissionsReply
-  Without subCommand: infoReply
-*/
 export const lookupReply = async (interaction: CommandInteraction) => {
   try {
     const usernameArg = interaction.options.getString('username')
@@ -57,12 +50,14 @@ export const assistantAskReply = async (interaction: CommandInteraction) => {
   try {
     // Sometimes, the model takes more than 3 seconds to respond, so we need to defer the reply
     // to let the user know that the bot is processing the request and it won't be rejected
-    await interaction.deferReply()
+    // https://discordjs.guide/slash-commands/response-methods.html#deferred-responses
+    interaction.deferReply()
+
     const { completion } = await sendPrompt(questionArg)
 
-    await interaction.editReply({ content: completion })
+    await interaction.editReply({ content: completion || 'Sorry, I had an issue while responding. Please try again!' })
     return
   } catch (e) {
-    await interaction.reply({ content: 'We could not reach the assistant.' })
+    await interaction.editReply({ content: 'We could not reach the assistant.' })
   }
 }
