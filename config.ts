@@ -15,6 +15,10 @@ if (!process.env.GRAPHQL_API)
 if (!process.env.GUILD_ID)
   throw new Error(errMessage("GUILD_ID is required"))
 
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error(errMessage("OPENAI_API_KEY is required"))
+}
+
 interface Config {
   prefix: string;
   discordToken: string;
@@ -25,6 +29,7 @@ interface Config {
   lessonChannels: { [key: string]: string };
   channels: { [key: string]: string };
   port: number;
+  openaiApiKey: string;
 }
 
 export const config: Config = {
@@ -64,6 +69,8 @@ export const config: Config = {
   // Channels
   channels: {
     welcome: "831750041445203979",
+    askC0d3: "1096494272880066590"
   },
   port: parseInt(process.env.PORT ?? "") || 5623,
+  openaiApiKey: process.env.OPENAI_API_KEY,
 } as const;

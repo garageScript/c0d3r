@@ -1,6 +1,6 @@
 import express from "express";
-import {api} from "./src/api";
-import {errorHandler} from "./src/api/middlewares/errorHandler";
+import { api } from "./src/api";
+import { errorHandler } from "./src/api/middlewares/errorHandler";
 
 export const app = express();
 
