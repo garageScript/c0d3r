@@ -48,12 +48,14 @@ export const assistantAskReply = async (interaction: CommandInteraction) => {
   }
 
   try {
+    const promptPromise = sendPrompt(questionArg)
+
     // Sometimes, the model takes more than 3 seconds to respond, so we need to defer the reply
     // to let the user know that the bot is processing the request and it won't be rejected
     // https://discordjs.guide/slash-commands/response-methods.html#deferred-responses
-    interaction.deferReply()
+    await interaction.deferReply()
 
-    const { completion } = await sendPrompt(questionArg)
+    const { completion } = await promptPromise
 
     await interaction.editReply({ content: completion || 'Sorry, I had an issue while responding. Please try again!' })
     return
