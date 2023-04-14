@@ -13,7 +13,7 @@ const userSlashCommand =
 
 const gptSlashCommand = new SlashCommandBuilder()
   .setName('ask')
-  .setDescription('Ask the assistant a question')
+  .setDescription('C0D3 assistant — Disclaimer: May occasionally generate incorrect information')
   .addStringOption((option) =>
     option
       .setName('question')
