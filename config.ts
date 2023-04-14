@@ -69,6 +69,7 @@ export const config: Config = {
   // Channels
   channels: {
     welcome: "831750041445203979",
+    askC0d3: "1096494272880066590"
   },
   port: parseInt(process.env.PORT ?? "") || 5623,
   openaiApiKey: process.env.OPENAI_API_KEY,
