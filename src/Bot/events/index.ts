@@ -5,6 +5,8 @@ import { message } from "./message";
 export interface BotEvent {
   name: string;
   once?: boolean;
+  // Discord.js provides ...any[] as arguments to the execute callback
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   execute: (...args: any[]) => void;
 }
 
