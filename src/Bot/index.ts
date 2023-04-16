@@ -71,10 +71,13 @@ class Bot {
     message: string,
     channelId: string,
     embed?: MessageEmbed | MessageEmbedOptions
-  ): Promise<Message> =>
-    (this.client.channels.cache.get(channelId) as TextChannel).send(
-      message ? message : { embeds: [embed!] }
-    );
+  ): Promise<Message> => {
+    const channel =
+      this.client.channels.cache.get(channelId) ??
+      (await this.client.channels.fetch(channelId));
+    const embeds = embed ? [embed] : embed;
+    return (channel as TextChannel).send(message ? message : { embeds });
+  };
 
   sendDirectMessage = async (
     message: string,
@@ -84,13 +87,12 @@ class Bot {
     const user =
       this.client.users.cache.get(userId) ??
       (await this.client.users.fetch(userId));
-    return user.send(message ? message : { embeds: [embed!] });
+    const embeds = embed ? [embed] : embed;
+    return user.send(message ? message : { embeds });
   };
 
   registerCommands = async () => {
-    const rest = new REST({ version: "9" }).setToken(
-      config.discordToken
-    );
+    const rest = new REST({ version: "9" }).setToken(config.discordToken);
 
     rest
       .put(Routes.applicationGuildCommands(config.clientId, config.guildId), {
