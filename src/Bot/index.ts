@@ -89,11 +89,11 @@ class Bot {
 
   registerCommands = async () => {
     const rest = new REST({ version: "9" }).setToken(
-      process.env.DISCORD_TOKEN!
+      config.discordToken
     );
 
     rest
-      .put(Routes.applicationGuildCommands(config.botToken, config.guildId), {
+      .put(Routes.applicationGuildCommands(config.clientId, config.guildId), {
         body: commands,
       })
       .then(() =>
