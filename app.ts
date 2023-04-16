@@ -7,7 +7,7 @@ export const app = express();
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send('<a href="https://c0d3.com">Become a software engineer!</a>');
+  res.send('<a href="https://c0d3.com">Become a software engineer!</a>');
 });
 
 app.use("/api", api);
