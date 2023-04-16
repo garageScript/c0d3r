@@ -27,7 +27,7 @@ export interface BotApiError extends BotErrorBase {
 
 export type BotError = BotAuthError | BotValidationError | BotApiError;
 
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+export const errorHandler: ErrorRequestHandler = (err, _req, res) => {
   // Unknown Error
   let status = 500;
   let error: BotError = { type: ErrorType.api_error, message: err.message };
