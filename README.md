@@ -37,11 +37,10 @@ Notes
 You should be able to run this `curl` command to verify your c0d3r bot is running correctly
 
 ```bash
-curl --location --request POST 'http://localhost:5623/api/senddirectmessage' \
+curl --location --request POST 'http://localhost:5623/api/messages/direct/<USER_ID>' \
 --header 'Authorization: Bearer <BOT_TOKEN>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "userId": "<USER_ID>",
     "message": "Good Job! You are ready to c0d3"
   }'
 ```
