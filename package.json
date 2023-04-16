@@ -5,7 +5,9 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node index.ts",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prettier:check": "prettier --check src --no-error-on-unmatched-pattern",
+    "prettier:fix": "prettier --write src --ignore-unknown --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
