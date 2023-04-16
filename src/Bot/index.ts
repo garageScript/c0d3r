@@ -34,8 +34,8 @@ class Bot {
       intents: [
         Intents.FLAGS.GUILDS,
         Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS
-      ]
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+      ],
     });
   }
 
@@ -60,7 +60,11 @@ class Bot {
       )
       .setTimestamp();
 
-    return this.sendChannelMessage("", config.lessonChannels[notificationLessonId], embed);
+    return this.sendChannelMessage(
+      "",
+      config.lessonChannels[notificationLessonId],
+      embed
+    );
   };
 
   sendChannelMessage = async (
@@ -68,7 +72,9 @@ class Bot {
     channelId: string,
     embed?: MessageEmbed | MessageEmbedOptions
   ): Promise<Message> =>
-    (this.client.channels.cache.get(channelId) as TextChannel).send(message ? message : { embeds: [embed!] });
+    (this.client.channels.cache.get(channelId) as TextChannel).send(
+      message ? message : { embeds: [embed!] }
+    );
 
   sendDirectMessage = async (
     message: string,
@@ -87,20 +93,17 @@ class Bot {
     );
 
     rest
-      .put(
-        Routes.applicationGuildCommands(
-          config.botToken,
-          config.guildId
-        ),
-        {
-          body: commands,
-        }
+      .put(Routes.applicationGuildCommands(config.botToken, config.guildId), {
+        body: commands,
+      })
+      .then(() =>
+        console.log("🤖 Successfully registered application commands.")
       )
-      .then(() => console.log("🤖 Successfully registered application commands."))
       .catch(console.error);
   };
 
-  registerCommandsReplies = () => this.client.on("interactionCreate", onInteractionCreate)
+  registerCommandsReplies = () =>
+    this.client.on("interactionCreate", onInteractionCreate);
 
   registerEvent = (event: BotEvent) => {
     if (event.once) {

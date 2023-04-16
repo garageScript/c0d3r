@@ -1,8 +1,8 @@
-name: 'Deploy to Caprover'
+name: "Deploy to Caprover"
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
