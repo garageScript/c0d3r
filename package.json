@@ -3,6 +3,17 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache --fix",
+      "prettier --ignore-unknown --write"
+    ]
+  },
   "scripts": {
     "start": "ts-node index.ts",
     "prettier:check": "prettier --check . --no-error-on-unmatched-pattern",
@@ -12,7 +23,8 @@
     "check": "yarn lint:check && yarn prettier:check",
     "fix": "yarn lint:fix && yarn prettier:fix",
     "clean": "rm -rf dist",
-    "build": "yarn clean && tsc"
+    "build": "yarn clean && tsc",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
@@ -31,6 +43,8 @@
     "@typescript-eslint/parser": "^5.58.0",
     "eslint": "^8.38.0",
     "eslint-config-prettier": "^8.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
     "prettier": "^2.8.7",
     "ts-node": "^10.0.0",
     "typescript": "^5.0.4"
