@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "lint-staged": {
     "*.ts": [
       "eslint --cache --fix",
