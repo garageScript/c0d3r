@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache --fix",
+      "prettier --ignore-unknown --write"
+    ]
+  },
   "scripts": {
     "start": "ts-node index.ts",
     "prettier:check": "prettier --check . --no-error-on-unmatched-pattern",
