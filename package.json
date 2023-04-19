@@ -15,7 +15,7 @@
     ]
   },
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "yarn build && node dist/index.js",
     "prettier:check": "prettier --check . --no-error-on-unmatched-pattern",
     "prettier:fix": "prettier --write . --ignore-unknown --no-error-on-unmatched-pattern",
     "lint:check": "eslint --cache .",
