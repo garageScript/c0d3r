@@ -1,10 +1,9 @@
 import { config } from "../../config";
 import {
   Client,
-  Intents,
+  EmbedBuilder,
+  GatewayIntentBits,
   Message,
-  MessageEmbed,
-  MessageEmbedOptions,
   TextChannel,
 } from "discord.js";
 import { BotEvent } from "./events";
@@ -32,9 +31,9 @@ class Bot {
   constructor() {
     this.client = new Client({
       intents: [
-        Intents.FLAGS.GUILDS,
-        Intents.FLAGS.GUILD_MESSAGES,
-        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
       ],
     });
   }
@@ -50,7 +49,7 @@ class Bot {
   }: SubmissionMessage): Promise<Message> => {
     const userString = idType === IdType.C0D3 ? `**${id}**` : `<@${id}>`;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor("#5440d8")
       .setTitle("New Submission")
       .setURL(`https://www.c0d3.com/review/${lessonSlug}`)
@@ -70,7 +69,7 @@ class Bot {
   sendChannelMessage = async (
     message: string,
     channelId: string,
-    embed?: MessageEmbed | MessageEmbedOptions
+    embed?: EmbedBuilder
   ): Promise<Message> => {
     const channel =
       this.client.channels.cache.get(channelId) ??
@@ -82,7 +81,7 @@ class Bot {
   sendDirectMessage = async (
     message: string,
     userId: string,
-    embed?: MessageEmbed | MessageEmbedOptions
+    embed?: EmbedBuilder
   ): Promise<Message> => {
     const user =
       this.client.users.cache.get(userId) ??

@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction, CommandInteraction } from "discord.js";
 import { GraphQLClient } from "graphql-request";
 import { USER_INFO } from "../../graphql";
 import { config } from "../../../config";
@@ -16,7 +16,7 @@ const graphQLClient = new GraphQLClient(config.graphqlAPI);
 
 export const lookupReply = async (interaction: CommandInteraction) => {
   try {
-    const usernameArg = interaction.options.getString("username");
+    const usernameArg = interaction.options.get("username");
     await interaction.deferReply({ ephemeral: true });
 
     const data = (await graphQLClient.request(USER_INFO, {
@@ -42,7 +42,9 @@ export const lookupReply = async (interaction: CommandInteraction) => {
   }
 };
 
-export const assistantAskReply = async (interaction: CommandInteraction) => {
+export const assistantAskReply = async (
+  interaction: ChatInputCommandInteraction
+) => {
   const { channelId } = interaction;
 
   // only allow this command in the #ask-c0d3 channel

@@ -1,5 +1,18 @@
-import { Awaitable, Interaction } from "discord.js";
+import {
+  Awaitable,
+  ChatInputCommandInteraction,
+  Interaction,
+} from "discord.js";
 import { assistantAskReply, lookupReply } from "./commandsReplies";
+
+const runIfChatInputCommand = (
+  interaction: Interaction,
+  callback: (interaction: ChatInputCommandInteraction) => Promise<void>
+) => {
+  if (interaction.isChatInputCommand()) {
+    callback(interaction);
+  }
+};
 
 export const onInteractionCreate = (
   interaction: Interaction
@@ -10,10 +23,10 @@ export const onInteractionCreate = (
 
   switch (commandName) {
     case "lookup":
-      lookupReply(interaction);
+      runIfChatInputCommand(interaction, lookupReply);
       break;
     case "ask":
-      assistantAskReply(interaction);
+      runIfChatInputCommand(interaction, assistantAskReply);
       break;
     default:
       break;
