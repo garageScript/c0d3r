@@ -9,6 +9,7 @@ import { ChannelMessage } from "../zodSchemas/ChannelMessage";
 import { DirectMessage } from "../zodSchemas/DirectMessage";
 import { config } from "../../../config";
 import { sendMessageDetailsIfIncluded } from "../utils/sendMessageDetailsIfIncluded";
+import { EmbedBuilder } from "discord.js";
 
 export const messages = express.Router();
 
@@ -18,7 +19,11 @@ messages.post(
   asyncErrorHandler(async (req, res) => {
     const { id } = req.params;
     const { message, embed, includeDetails }: ChannelMessage = req.body;
-    const botPromise = bot.sendChannelMessage(message, id, embed);
+    const botPromise = bot.sendChannelMessage(
+      message,
+      id,
+      new EmbedBuilder(embed)
+    );
     await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
 );
@@ -32,7 +37,7 @@ messages.post(
     const botPromise = bot.sendChannelMessage(
       message,
       config.lessonChannels[lessonId],
-      embed
+      new EmbedBuilder(embed)
     );
     await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
@@ -44,7 +49,11 @@ messages.post(
   asyncErrorHandler(async (req, res) => {
     const { userId } = req.params;
     const { message, embed, includeDetails }: DirectMessage = req.body;
-    const botPromise = bot.sendDirectMessage(message, userId, embed);
+    const botPromise = bot.sendDirectMessage(
+      message,
+      userId,
+      new EmbedBuilder(embed)
+    );
     await sendMessageDetailsIfIncluded(includeDetails, botPromise, res);
   })
 );
