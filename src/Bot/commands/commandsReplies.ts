@@ -16,11 +16,11 @@ const graphQLClient = new GraphQLClient(config.graphqlAPI);
 
 export const lookupReply = async (interaction: CommandInteraction) => {
   try {
-    const usernameArg = interaction.options.get("username");
+    const usernameOption = interaction.options.get("username");
     await interaction.deferReply({ ephemeral: true });
 
     const data = (await graphQLClient.request(USER_INFO, {
-      username: usernameArg,
+      username: usernameOption?.value || "",
     })) as UserInfoQuery;
 
     const userInfo = data?.userInfo;
@@ -30,14 +30,15 @@ export const lookupReply = async (interaction: CommandInteraction) => {
     if (discordUserId) {
       // <@${discordUserId}> is used to create a link for the user profile
       await interaction.editReply({
-        content: `${usernameArg} on Discord is <@${discordUserId}>`,
+        content: `${usernameOption?.value} on Discord is <@${discordUserId}>`,
       });
     } else {
       await interaction.editReply({
-        content: `${usernameArg} is not connected to Discord.`,
+        content: `${usernameOption?.value} is not connected to Discord.`,
       });
     }
   } catch (err) {
+    console.log(err);
     await interaction.editReply({ content: "We could not find the user." });
   }
 };
