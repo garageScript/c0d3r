@@ -1,9 +1,9 @@
 import { MessageEvent } from "./index";
 import { config } from "../../../config";
-import { MessageType } from "discord.js";
+import { Events, MessageType } from "discord.js";
 
 export const message: MessageEvent = {
-  name: "message",
+  name: Events.MessageCreate,
   execute: (message) => {
     if (
       message.channel.id === config.channels.welcome &&

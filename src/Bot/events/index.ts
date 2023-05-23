@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Events, Message } from "discord.js";
 import { bot } from "../../../index";
 import { message } from "./message";
 
@@ -11,7 +11,7 @@ export interface BotEvent {
 }
 
 export interface MessageEvent extends BotEvent {
-  name: "message";
+  name: Events;
   execute: (message: Message) => void;
 }
 

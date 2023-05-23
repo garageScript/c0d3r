@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, CommandInteraction } from "discord.js";
+import { ChatInputCommandInteraction } from "discord.js";
 import { GraphQLClient } from "graphql-request";
 import { USER_INFO } from "../../graphql";
 import { config } from "../../../config";
@@ -14,13 +14,13 @@ type UserInfoQuery = {
 
 const graphQLClient = new GraphQLClient(config.graphqlAPI);
 
-export const lookupReply = async (interaction: CommandInteraction) => {
+export const lookupReply = async (interaction: ChatInputCommandInteraction) => {
   try {
-    const usernameArg = interaction.options.get("username");
+    const username = interaction.options.getString("username") ?? "";
     await interaction.deferReply({ ephemeral: true });
 
     const data = (await graphQLClient.request(USER_INFO, {
-      username: usernameArg,
+      username: username,
     })) as UserInfoQuery;
 
     const userInfo = data?.userInfo;
@@ -30,11 +30,11 @@ export const lookupReply = async (interaction: CommandInteraction) => {
     if (discordUserId) {
       // <@${discordUserId}> is used to create a link for the user profile
       await interaction.editReply({
-        content: `${usernameArg} on Discord is <@${discordUserId}>`,
+        content: `${username} on Discord is <@${discordUserId}>`,
       });
     } else {
       await interaction.editReply({
-        content: `${usernameArg} is not connected to Discord.`,
+        content: `${username} is not connected to Discord.`,
       });
     }
   } catch (err) {
