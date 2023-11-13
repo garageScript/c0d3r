@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction } from "discord.js";
 import { GraphQLClient } from "graphql-request";
-import { USER_INFO } from "../../graphql";
 import { config } from "../../../config";
+import { USER_INFO } from "../../graphql";
 import { sendPrompt } from "./externals/gpt";
 
 type UserInfoQuery = {
@@ -82,6 +82,8 @@ export const assistantAskReply = async (
     });
     return;
   } catch (e) {
+    console.error(e);
+
     await interaction.editReply({
       content: "We could not reach the assistant.",
     });
