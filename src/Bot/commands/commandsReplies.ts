@@ -16,11 +16,12 @@ const graphQLClient = new GraphQLClient(config.graphqlAPI);
 
 export const lookupReply = async (interaction: ChatInputCommandInteraction) => {
   try {
-    const username = interaction.options.getString("username") ?? "";
     await interaction.deferReply({ ephemeral: true });
 
+    const username = interaction.options.getString("username") ?? "Unknown";
+
     const data = (await graphQLClient.request(USER_INFO, {
-      username: username,
+      username,
     })) as UserInfoQuery;
 
     const userInfo = data?.userInfo;
@@ -75,12 +76,32 @@ export const assistantAskReply = async (
 
     const { completion } = await promptPromise;
 
-    await interaction.editReply({
-      content:
-        completion ||
-        "Sorry, I had an issue while responding. Please try again!",
-    });
-    return;
+    if (!completion) {
+      await interaction.editReply({
+        content: "Sorry, I had an issue while responding. Please try again!",
+      });
+      return;
+    }
+
+    // split the response into paragraphs
+    const paragraphs = completion.split("\n");
+
+    let message = "";
+    for (const paragraph of paragraphs) {
+      // add paragraphs to the message until it reaches the 2000 character limit
+      if ((message + paragraph).length <= 1900) {
+        message += `${paragraph}\n`;
+      } else {
+        // send a follow up if the message is > 2000 characters
+        await interaction.followUp({ content: message });
+        message = `${paragraph}\n`;
+      }
+    }
+
+    // send the rest of the message if it's not empty
+    if (message.trim() !== "") {
+      await interaction.followUp({ content: message });
+    }
   } catch (e) {
     console.error(e);
 
